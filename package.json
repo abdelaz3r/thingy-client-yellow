@@ -1,0 +1,14 @@
+{
+  "name": "washingmachine",
+  "version": "1.0.0",
+  "description": "Advanced Software Engineering 2017",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "hapi": "^16.6.2"
+  }
+}
