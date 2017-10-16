@@ -26,6 +26,11 @@
             </span>
           </p>
         </div>
+        <div class="field">
+          <button class="button">
+            Login
+          </button>
+        </div>
       </div>
       <div class="column is-one-third">
 

@@ -1,24 +1,33 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import home from '@/components/home'
+import admin_dashboard from '@/components/admin/dashboard'
+import user_dashboard from '@/components/user/dashboard'
+import HelloWorld from '@/components/HelloWorld'
 
 Vue.use(Router)
-
-Vue.component('top-bar', {
-  template: '<div>Top Bar</div>'
-});
 
 export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
       component: home
     },
     {
       path: '/login',
-      name: 'login',
       component: home
+    },
+    {
+      path: '/admin/dashboard',
+      component: admin_dashboard
+    },
+    {
+      path: '/user/dashboard',
+      component: user_dashboard
+    },
+    {
+      path: '/HelloWorld',
+      component: HelloWorld
     }
   ]
 })
