@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import home from '@/components/home'
 import admin_dashboard from '@/components/admin/dashboard'
 import user_dashboard from '@/components/user/dashboard'
-import HelloWorld from '@/components/HelloWorld'
 
 Vue.use(Router)
 
@@ -24,10 +23,6 @@ export default new Router({
     {
       path: '/user/dashboard',
       component: user_dashboard
-    },
-    {
-      path: '/HelloWorld',
-      component: HelloWorld
     }
   ]
 })
