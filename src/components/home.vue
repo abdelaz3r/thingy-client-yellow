@@ -27,7 +27,7 @@
           </p>
         </div>
         <div class="field">
-          <button class="button">
+          <button v-on:click="login" class="button">
             Login
           </button>
         </div>
@@ -41,6 +41,7 @@
 
 <script>
 
+vue.login();
 
 </script>
 
