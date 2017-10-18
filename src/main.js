@@ -22,6 +22,15 @@ Vue.config.productionTip = false
 var vue = new Vue({
   el: '#app',
   router,
+  //local storage
+  ls: {
+    authKey: {
+      type: String
+    },
+    authHeader: {
+      type: Object
+    }
+  },
   template: '<App/>',
   components: { App, home }
 });

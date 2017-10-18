@@ -51,28 +51,45 @@ export default {
   },
   methods: {
     /**
-    *   Todo: Using vue-session instead of local storage?
     *   Todo: Display errors for users, make all cases
     *   Todo: Make logout
-    *   Todo: Comments
     *   Todo: Get admin flag from API until it's ready
     **/
     login: function() {
+      //get instance for callbackfunction
       var self = this;
+
+      //send post request to api.
       axios.post(api+'auth/', {
         email: this.email,
         password: this.password
       })
       .then(function(response) {
         switch (response.status) {
+          //Successfully Authenticated
           case 200:
-            Vue.ls.set('header', response.headers)
+            //save auth header for further requests
+            Vue.ls.set('authHeader', response.headers)
+            //foreward the user to the dashboard
+            //TODO: Get admin flag from api and redirect to the fitting dashboard
             self.$router.push('/admin/dashboard')
             break;
 
+          //Invalid Request
+          case 400:
+
+            break;
+
+          //Invalid credentials provided
           case 401:
 
             break;
+
+          //Internal error
+          case 500:
+
+            break;
+
           default:
             self.$router.push('/')
         }
