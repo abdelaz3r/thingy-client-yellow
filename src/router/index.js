@@ -1,8 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import home from '@/components/home'
-import admin_dashboard from '@/components/admin/dashboard'
-import user_dashboard from '@/components/user/dashboard'
+//ADMIN components
+import adminDashboard from '@/components/admin/dashboard'
+import adminUsers from '@/components/admin/users'
+
+//USER components
+import userDashboard from '@/components/user/dashboard'
 
 Vue.use(Router)
 
@@ -16,13 +20,21 @@ export default new Router({
       path: '/login',
       component: home
     },
+
+    //ADMIN PATH
     {
       path: '/admin/dashboard',
-      component: admin_dashboard
+      component: adminDashboard
     },
     {
+      path: '/admin/users',
+      component: adminUsers
+    },
+
+    //USER PATH
+    {
       path: '/user/dashboard',
-      component: user_dashboard
+      component: userDashboard
     }
   ]
 })

@@ -1,32 +1,43 @@
 <template>
   <div>
-    <nav class="panel">
-      <p class="panel-heading subtitle is-2">
+    <dashboard>
+      <div slot="title">
         Admin Dashboard
-      </p>
-      <div class="panel-block">
+      </div>
       <div class="column">
         <a href="#/admin/users">
-          <div class="notification is-warning subtitle is-3">
+          <div class="notification is-warning subtitle is-4">
             Users
           </div>
         </a>
       </div>
       <div class="column">
-        <div class="notification is-primary subtitle is-3">Machines</div>
+        <a href="#/admin/machines">
+          <div class="notification is-primary subtitle is-4">Machines</div>
+        </a>
       </div>
       <div class="column">
-        <div class="notification is-success subtitle is-3">Statistics</div>
+        <a href="#/admin/statistics">
+          <div class="notification is-success subtitle is-4">Statistics</div>
+        </a>
       </div>
       <div class="column">
-        <div class="notification is-danger subtitle is-3">Innvoices</div>
+        <a href="#/admin/invoices">
+          <div class="notification is-danger subtitle is-4">Invoices</div>
+        </a>
       </div>
-  </div>
-  </nav>
+    </dashboard>
   </div>
 </template>
 
 <script>
+import dashboard from '../templates/dashboard'
+
+export default {
+  components: {
+    dashboard
+  }
+}
 
 </script>
 
