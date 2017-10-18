@@ -15,12 +15,21 @@
       </thead>
       <tbody>
         <tr v-for="user in users">
-          <th contenteditable="true" v-model="firstname">{{user.firstname}}</th>
-          <th contenteditable="true">{{user.lastname}}</th>
-          <th contenteditable="true">{{user.email}}</th>
-          <th contenteditable="true">{{user.admin}}</th>
+          <div style="display: none;" v-model="id">{{user.id}}</div>
+          <th contenteditable="true" v-model="firstname" v-on:DOMCharacterDataModified="save">
+            {{user.firstname}}
+          </th>
+          <th contenteditable="true" v-model="lastname" v-on:DOMCharacterDataModified="save">
+            {{user.lastname}}
+          </th>
+          <th contenteditable="true" v-model="email" v-on:DOMCharacterDataModified="save">
+            {{user.email}}
+          </th>
+          <th contenteditable="true" v-model="admin" v-on:DOMCharacterDataModified="save">
+            {{user.admin}}
+          </th>
           <th>
-            <button class="button is-danger">Delete</button>
+            <button class="button is-danger" v-model="delbutton" v-on:click="del" :value="user.id">Delete</button>
           </th>
         </tr>
       </tbody>
@@ -38,16 +47,27 @@ export default {
   data: function() {
     return {
       display: true,
+      delbutton: '',
+      id: '',
       firstname: '',
+      lastname: '',
+      email: '',
+      admin: '',
       users: [
-        {firstname: "Michael", lastname: "Scheurer", email: "michael.scheurer@derbund.ch", admin: "yes"},
-        {firstname: "Mr. X", lastname: "Test", email: "x.test@tester.com", admin: "no"}
+        {id: 3, firstname: "Michael", lastname: "Scheurer", email: "michael.scheurer@derbund.ch", admin: "yes"},
+        {id: 4, firstname: "Mr. X", lastname: "Test", email: "x.test@tester.com", admin: "no"}
       ]
     }
   },
   methods: {
     getUsers: function() {
       axios.get(api+'')
+    },
+    save: function() {
+      console.log("save")
+    },
+    del: function() {
+      console.log("deleted " + this.delbutton)
     }
   }
 }
