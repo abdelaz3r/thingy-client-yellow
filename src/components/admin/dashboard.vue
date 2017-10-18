@@ -1,6 +1,6 @@
 <template>
   <div>
-    <dashboard>
+    <dashboard :display="display">
       <div slot="title">
         Admin Dashboard
       </div>
@@ -36,6 +36,11 @@ import dashboard from '../templates/dashboard'
 export default {
   components: {
     dashboard
+  },
+  data: function() {
+    return {
+      display: false
+    }
   }
 }
 
