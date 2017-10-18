@@ -16,20 +16,20 @@
       <tbody>
         <tr v-for="user in users">
           <div style="display: none;" v-model="id">{{user.id}}</div>
-          <th contenteditable="true" v-model="firstname" v-on:DOMCharacterDataModified="save">
+          <th contenteditable="true" v-model="firstname" v-on:DOMCharacterDataModified="save(user.id, user.firstname)">
             {{user.firstname}}
           </th>
-          <th contenteditable="true" v-model="lastname" v-on:DOMCharacterDataModified="save">
+          <th contenteditable="true" v-model="lastname" v-on:DOMCharacterDataModified="save(user.id)">
             {{user.lastname}}
           </th>
-          <th contenteditable="true" v-model="email" v-on:DOMCharacterDataModified="save">
+          <th contenteditable="true" v-model="email" v-on:DOMCharacterDataModified="save(user.id)">
             {{user.email}}
           </th>
-          <th contenteditable="true" v-model="admin" v-on:DOMCharacterDataModified="save">
+          <th contenteditable="true" v-model="admin" v-on:DOMCharacterDataModified="save(user.id)">
             {{user.admin}}
           </th>
           <th>
-            <button class="button is-danger" v-model="delbutton" v-on:click="del" :value="user.id">Delete</button>
+            <button class="button is-danger" v-on:click="del(user.id)">Delete</button>
           </th>
         </tr>
       </tbody>
@@ -63,11 +63,11 @@ export default {
     getUsers: function() {
       axios.get(api+'')
     },
-    save: function() {
-      console.log("save")
+    save: function(id, firstname) {
+      console.log("save " + firstname + id)
     },
-    del: function() {
-      console.log("deleted " + this.delbutton)
+    del: function(id) {
+      console.log("deleted " + id)
     }
   }
 }
