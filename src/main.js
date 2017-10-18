@@ -4,18 +4,24 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
+import home from './components/home'
+import VueLocalStorage from 'vue-localstorage'
+
+Vue.use(VueLocalStorage, {
+  name: 'ls',
+  createComputed: true //created computed members from your variable declarations
+})
+
+global.Vue = Vue
+global.axios = axios
+global.api = 'http://localhost:8080/'
 
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
-new Vue({
+var vue = new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App },
-  methods: {
-    login: function(event) {
-      console.log("login triggered");
-    }
-  }
+  components: { App, home }
 });
