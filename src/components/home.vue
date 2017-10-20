@@ -50,9 +50,10 @@ export default {
     }
   },
   methods: {
+
     /**
     *   Todo: Display errors for users, make all cases
-    *   Todo: Make logout
+    *   Todo: Make logout: Delete Vue.ls
     *   Todo: Get admin flag from API until it's ready
     **/
     login: function() {
@@ -66,13 +67,23 @@ export default {
       })
       .then(function(response) {
         switch (response.status) {
+
           //Successfully Authenticated
           case 200:
             //save auth header for further requests
             Vue.ls.set('authHeader', response.headers)
-            //foreward the user to the dashboard
-            //TODO: Get admin flag from api and redirect to the fitting dashboard
-            self.$router.push('/admin/dashboard')
+
+            //save user, which logged in successfully
+            Vue.ls.set('myUser', response.data)
+
+            //foreward the user to the dashboard depending on his role
+            if(Vue.ls.get('myUser').role == "admin"){
+              self.$router.push('/admin/dashboard')
+            }
+            else if (Vue.ls.get('myUser').role == "user") {
+              self.$router.push('/user/dashboard')
+            }
+
             break;
 
           //Invalid Request

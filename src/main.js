@@ -24,10 +24,10 @@ var vue = new Vue({
   router,
   //local storage
   ls: {
-    authKey: {
-      type: String
-    },
     authHeader: {
+      type: Object
+    },
+    myUser: {
       type: Object
     }
   },
