@@ -1,41 +1,41 @@
 <template>
   <div>
-    <div class="level top-space-20">
-      <div class="level-item has-text-centered">
-        <div class="subtitle is-2">Login @ Smart Loundry</div>
+      <div class="level top-space-20">
+        <div class="level-item has-text-centered">
+          <div class="subtitle is-2">Login @ Smart Loundry</div>
+        </div>
       </div>
-    </div>
-    <div class="columns top-space-5">
-      <div class="column is-one-third">
+      <div class="columns top-space-5">
+        <div class="column is-one-third">
 
-      </div>
-      <div class="column">
-        <div class="field">
-          <p class="control has-icons-left has-icons-right">
-            <input class="input" type="email" placeholder="Email" v-model="email">
-            <span class="icon is-small is-left">
-              <i class="fa fa-envelope"></i>
-            </span>
-          </p>
         </div>
-        <div class="field">
-          <p class="control has-icons-left">
-            <input class="input" type="password" placeholder="Password" v-model="password">
-            <span class="icon is-small is-left">
-              <i class="fa fa-lock"></i>
-            </span>
-          </p>
+        <div class="column">
+          <div class="field">
+            <p class="control has-icons-left has-icons-right">
+              <input class="input" type="email" placeholder="Email" v-model="email">
+              <span class="icon is-small is-left">
+                <i class="fa fa-envelope"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control has-icons-left">
+              <input class="input" type="password" placeholder="Password" v-model="password">
+              <span class="icon is-small is-left">
+                <i class="fa fa-lock"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <button v-on:click="login" class="button">
+              Login
+            </button>
+          </div>
         </div>
-        <div class="field">
-          <button v-on:click="login" class="button">
-            Login
-          </button>
-        </div>
-      </div>
-      <div class="column is-one-third">
+        <div class="column is-one-third">
 
+        </div>
       </div>
-    </div>
   </div>
 </template>
 

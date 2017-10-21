@@ -1,16 +1,16 @@
 <template>
   <div>
-    <button class="button is-middle" v-if="display" v-on:click="back">
-      < Back
-    </button>
-    <nav class="panel">
-      <div class="panel-heading">
-        <slot name="title"></slot>
-      </div>
-      <div class="panel-block">
-        <slot></slot>
-      </div>
-    </nav>
+      <button class="button is-middle" v-if="display" v-on:click="back">
+        < Back
+      </button>
+      <nav class="panel">
+        <div class="panel-heading">
+          <slot name="title"></slot>
+        </div>
+        <div class="panel-block">
+          <slot></slot>
+        </div>
+      </nav>
   </div>
 </template>
 
@@ -24,7 +24,6 @@ module.exports = {
     }
   },
   mounted() {
-    //this.notify("Testmessage")
   }
 }
 

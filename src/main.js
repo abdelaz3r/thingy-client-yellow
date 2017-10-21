@@ -7,6 +7,7 @@ import axios from 'axios'
 import home from './components/home'
 import VueLocalStorage from 'vue-localstorage'
 import Notifications from 'vue-notification'
+import frame from './components/templates/frame'
 
 Vue.use(VueLocalStorage, {
   name: 'ls',
@@ -14,11 +15,13 @@ Vue.use(VueLocalStorage, {
 })
 Vue.use(Notifications)
 
+global.frame = frame
 global.Vue = Vue
 global.axios = axios
 global.api = 'http://localhost:8080/'
 
 Vue.config.productionTip = false
+
 
 /* eslint-disable no-new */
 var vue = new Vue({
@@ -34,22 +37,6 @@ var vue = new Vue({
     }
   },
   template: '<App/>',
-  components: { App, home }
+  components: { App, home },
+
 });
-
-
-// define a mixin object
-var myMixin = {
-  created: function () {
-    this.hello()
-  },
-  methods: {
-    hello: function () {
-      console.log('hello from mixin!')
-    }
-  }
-}
-// define a component that uses this mixin
-var Component = Vue.extend({
-  mixins: [myMixin]
-})
