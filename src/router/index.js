@@ -4,6 +4,7 @@ import home from '@/components/home'
 //ADMIN components
 import adminDashboard from '@/components/admin/dashboard'
 import adminUsers from '@/components/admin/users'
+import adminMachines from '@/components/admin/machines'
 
 //USER components
 import userDashboard from '@/components/user/dashboard'
@@ -29,6 +30,10 @@ export default new Router({
     {
       path: '/admin/users',
       component: adminUsers
+    },
+    {
+      path: '/admin/machines',
+      component: adminMachines
     },
 
     //USER PATH

@@ -4,68 +4,70 @@
       <div slot="title">
         Manage Users
       </div>
-      <table class="table is-fullwidth is-hoverable">
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>User role</th>
-            <th>Password</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th><input class="input" v-model="addFirstname"></th>
-            <th><input class="input" v-model="addLastname"></th>
-            <th><input class="input" v-model="addEmail"></th>
-            <th>
-              <div class="select" v-model="addAdmin">
-                <select>
-                  <option>user</option>
-                  <option>admin</option>
-                </select>
-              </div>
-            </th>
-            <th><input class="input" v-model="addPassword"></th>
-            <th><button class="button is-success" @click="addNewUser">Add</button></th>
-          </tr>
-          <tr class="input_as_textfield" v-for="user in users">
-            <th>
-              <input class="input" v-model="user.firstname"
-              @keyup.enter="save(user)"
-              @blur="save(user)">
-            </th>
-            <th>
-              <input class="input" v-model="user.lastname"
-              @keyup.enter="save(user)"
-              @blur="save(user)">
-            </th>
-            <th>
-              <input class="input" size="40" type="email" v-model="user.email"
-              @keyup.enter="save(user)"
-              @blur="save(user)">
-            </th>
-            <th>
-              <div class="select" v-model="user.admin">
-                <select>
-                  <option>user</option>
-                  <option>admin</option>
-                </select>
-              </div>
-            </th>
-            <th>
-              <input class="input" value="set new password"
-              @keyup.enter="save(user, $event.target.value)"
-              @blur="save(user, $event.target.value)">
-            </th>
-            <th>
-              <button class="button is-danger" v-on:click="del(user.userId)">Delete</button>
-            </th>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-scroll">
+        <table class="table is-fullwidth is-hoverable">
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>User role</th>
+              <th>Password</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th><input class="input minsize120" v-model="addFirstname"></th>
+              <th><input class="input minsize120" v-model="addLastname"></th>
+              <th><input class="input minsize120" v-model="addEmail"></th>
+              <th>
+                <div class="select" v-model="addAdmin">
+                  <select>
+                    <option>user</option>
+                    <option>admin</option>
+                  </select>
+                </div>
+              </th>
+              <th><input class="input minsize120" v-model="addPassword"></th>
+              <th><button class="button is-success" @click="addNewUser">Add</button></th>
+            </tr>
+            <tr class="input_as_textfield" v-for="user in users">
+              <th>
+                <input class="input" v-model="user.firstname"
+                @keyup.enter="save(user)"
+                @blur="save(user)">
+              </th>
+              <th>
+                <input class="input" v-model="user.lastname"
+                @keyup.enter="save(user)"
+                @blur="save(user)">
+              </th>
+              <th>
+                <input class="input" type="email" v-model="user.email"
+                @keyup.enter="save(user)"
+                @blur="save(user)">
+              </th>
+              <th>
+                <div class="select" v-model="user.admin">
+                  <select>
+                    <option>user</option>
+                    <option>admin</option>
+                  </select>
+                </div>
+              </th>
+              <th>
+                <input class="input" value="set new password"
+                @keyup.enter="save(user, $event.target.value)"
+                @blur="save(user, $event.target.value)">
+              </th>
+              <th>
+                <button class="button is-danger" v-on:click="del(user.userId)">Delete</button>
+              </th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </dashboard>
   </div>
 </template>
@@ -92,19 +94,20 @@ export default {
     }
   },
   mounted() {
-
-    //load list from api, when components are fully loaded
-    var self = this
-    axios.get(api+'users')
-    .then(function(response) {
-      self.users = response.data
-    })
-    .catch(function(err) {
-
-    })
+    this.getAllUsers()
   },
   methods: {
+    //load list from api, when components are fully loaded
+    getAllUsers: function() {
+      var self = this
+      axios.get(api+'users')
+      .then(function(response) {
+        self.users = response.data
+      })
+      .catch(function(err) {
 
+      })
+    },
     //update user
     save: function(user, password) {
       var self = this
@@ -116,9 +119,31 @@ export default {
       })
       .then(function(response) {
 
+        //Generate Notifications
+        if(response.status == 200) {
+          self.$notify({
+            title: "User Updated",
+            type: "success"
+          })
+        }
       })
       .catch(function(err) {
-
+        //console.log(err)
+        if(err.response.status == 409) {
+          self.$notify({
+            title: "Conflict with an existing email",
+            text: "nothing saved",
+            type: "error"
+          })
+        }
+        else {
+          self.$notify({
+            title: "Error",
+            text: "Error code: " + err.response.status,
+            type: "error"
+          })
+        }
+        self.getAllUsers()
       })
     },
 
@@ -140,10 +165,19 @@ export default {
 
           var position = self.users.indexOfElement(id);
           self.users.splice(position,1)
+
+          self.$notify({
+            title: "User deleted",
+            type: "success"
+          })
         }
       })
       .catch(function(err) {
-        console.log(err);
+        self.$notify({
+          title: "Error",
+          text: "Error code: " + err.response.status,
+          type: "error"
+        })
       })
     },
 
@@ -157,6 +191,7 @@ export default {
       })
       .then(function(response) {
 
+        //Add User to local array
         self.users.unshift({
           userId: response.data.userId,
           firstname: self.addFirstname,
@@ -169,9 +204,30 @@ export default {
         self.addFirstname = ''
         self.addLastname = ''
         self.addEmail = ''
+
+        if(response.status == 200) {
+          self.$notify({
+            title: "User created",
+            type: "success"
+          })
+        }
       })
       .catch(function(err) {
-        console.log(err)
+        //console.log(err)
+        if(err.response.status == 409) {
+          self.$notify({
+            title: "Conflict with an existing email",
+            text: "nothing saved",
+            type: "error"
+          })
+        }
+        else {
+          self.$notify({
+            title: "Error",
+            text: "Error code: " + err.response.status,
+            type: "error"
+          })
+        }
       })
     }
   }
@@ -182,6 +238,14 @@ export default {
 <style>
 .table tbody tr th {
   font-weight: normal;
+}
+
+.minsize120 {
+  min-width: 120px;
+}
+
+.table-scroll {
+  overflow-x:auto;
 }
 
 .input_as_textfield input {

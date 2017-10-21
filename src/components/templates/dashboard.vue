@@ -22,6 +22,9 @@ module.exports = {
     back: function() {
       this.$router.go(-1)
     }
+  },
+  mounted() {
+    //this.notify("Testmessage")
   }
 }
 

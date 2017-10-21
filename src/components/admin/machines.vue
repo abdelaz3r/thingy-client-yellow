@@ -1,14 +1,16 @@
 <template>
+
   <div>
     <dashboard :display="display">
       <div slot="title">
-        Title
+        Manage Machines
       </div>
       <slot>
-        Content
+        
       </slot>
     </dashboard>
   </div>
+
 </template>
 
 <script>
@@ -20,7 +22,7 @@ export default {
   },
   data: function() {
     return {
-      display: false
+      display: true
     }
   }
 }
@@ -28,5 +30,6 @@ export default {
 </script>
 
 <style>
+
 
 </style>

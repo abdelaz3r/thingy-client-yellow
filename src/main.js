@@ -6,11 +6,13 @@ import router from './router'
 import axios from 'axios'
 import home from './components/home'
 import VueLocalStorage from 'vue-localstorage'
+import Notifications from 'vue-notification'
 
 Vue.use(VueLocalStorage, {
   name: 'ls',
   createComputed: true //created computed members from your variable declarations
 })
+Vue.use(Notifications)
 
 global.Vue = Vue
 global.axios = axios
@@ -34,3 +36,20 @@ var vue = new Vue({
   template: '<App/>',
   components: { App, home }
 });
+
+
+// define a mixin object
+var myMixin = {
+  created: function () {
+    this.hello()
+  },
+  methods: {
+    hello: function () {
+      console.log('hello from mixin!')
+    }
+  }
+}
+// define a component that uses this mixin
+var Component = Vue.extend({
+  mixins: [myMixin]
+})

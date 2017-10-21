@@ -52,7 +52,6 @@ export default {
   methods: {
 
     /**
-    *   Todo: Display errors for users, make all cases
     *   Todo: Make logout: Delete Vue.ls
     *   Todo: Get admin flag from API until it's ready
     **/
@@ -66,47 +65,43 @@ export default {
         password: this.password
       })
       .then(function(response) {
-        switch (response.status) {
+        if(response.status == 200) {
+          //save auth header for further requests
+          Vue.ls.set('authHeader', response.headers)
 
-          //Successfully Authenticated
-          case 200:
-            //save auth header for further requests
-            Vue.ls.set('authHeader', response.headers)
+          //save user, which logged in successfully
+          Vue.ls.set('myUser', response.data)
 
-            //save user, which logged in successfully
-            Vue.ls.set('myUser', response.data)
+          //foreward the user to the dashboard depending on his role
+          if(Vue.ls.get('myUser').role == "admin"){
+            self.$router.push('/admin/dashboard')
+          }
+          else if (Vue.ls.get('myUser').role == "user") {
+            self.$router.push('/user/dashboard')
+          }
 
-            //foreward the user to the dashboard depending on his role
-            if(Vue.ls.get('myUser').role == "admin"){
-              self.$router.push('/admin/dashboard')
-            }
-            else if (Vue.ls.get('myUser').role == "user") {
-              self.$router.push('/user/dashboard')
-            }
-
-            break;
-
-          //Invalid Request
-          case 400:
-
-            break;
-
-          //Invalid credentials provided
-          case 401:
-
-            break;
-
-          //Internal error
-          case 500:
-
-            break;
-
-          default:
-            self.$router.push('/')
+          //notify user
+          self.$notify({
+            title: "Login successfull",
+            type: "success"
+          })
         }
       })
-      .catch(function(error) {
-        console.log(error);
+      .catch(function(err) {
+        //Notify User
+        if(err.response.status == 401) {
+          self.$notify({
+            title: "Wrong Credentials!",
+            type: "error"
+          })
+        }
+        else {
+          self.$notify({
+            title: "Error",
+            text: "Error code: " + err.response.status,
+            type: "error"
+          })
+        }
       });
     }
   }

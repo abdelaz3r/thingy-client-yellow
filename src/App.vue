@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <notifications position="top center"/>
     <div class="container">
       <div class="level top-bar">
         <div class="lefel-left">
