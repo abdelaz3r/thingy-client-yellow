@@ -13,7 +13,6 @@
         <div class="lefel-right">
           <div class="level-item">
             <div @click="log" class="button">{{LogButton}}</div>
-
           </div>
         </div>
       </div>
@@ -30,9 +29,8 @@ module.exports = {
   name: 'App',
   methods: {
 
-    //Login/Logout text in the top bar
+    //Logout/Login
     log: function() {
-
       //If user is logged in, log it out
       if(Vue.ls.get("myUser")){
         Vue.ls.set("myUser", null)
@@ -63,6 +61,8 @@ module.exports = {
         this.$router.push("/user/dashboard")
       }
     }
+
+    //if user is not logged in, set logButton to Login
     else {
       this.LogButton = "Login"
     }

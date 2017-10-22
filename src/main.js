@@ -14,6 +14,7 @@ Vue.use(VueLocalStorage, {
 })
 Vue.use(Notifications)
 
+//define global variables
 global.Vue = Vue
 global.axios = axios
 global.api = 'http://localhost:8080/'

@@ -7,7 +7,6 @@
       </div>
       <div class="columns top-space-5">
         <div class="column is-one-third">
-
         </div>
         <div class="column">
           <div class="field">
@@ -33,7 +32,6 @@
           </div>
         </div>
         <div class="column is-one-third">
-
         </div>
       </div>
   </div>
@@ -50,13 +48,7 @@ module.exports = {
     }
   },
   methods: {
-    makeItHappen: function(){
-    	EventBus.$emit("changeLogButton", "Logout")
-    },
-    /**
-    *   Todo: Make logout: Delete Vue.ls
-    *   Todo: Get admin flag from API until it's ready
-    **/
+
     login: function() {
       //get instance for callbackfunction
       var self = this;
@@ -68,6 +60,8 @@ module.exports = {
       })
       .then(function(response) {
         if(response.status == 200) {
+
+          //change the login button text
           EventBus.$emit("changeLogButton", "Logout")
 
           //save auth header for further requests
