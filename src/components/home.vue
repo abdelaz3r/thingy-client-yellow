@@ -27,7 +27,7 @@
             </p>
           </div>
           <div class="field">
-            <button v-on:click="login" class="button">
+            <button @click="login()" class="button">
               Login
             </button>
           </div>
@@ -41,7 +41,7 @@
 
 <script>
 
-export default {
+module.exports = {
   name: 'home',
   data: function() {
     return {
@@ -50,7 +50,9 @@ export default {
     }
   },
   methods: {
-
+    makeItHappen: function(){
+    	EventBus.$emit("changeLogButton", "Logout")
+    },
     /**
     *   Todo: Make logout: Delete Vue.ls
     *   Todo: Get admin flag from API until it's ready
@@ -66,6 +68,8 @@ export default {
       })
       .then(function(response) {
         if(response.status == 200) {
+          EventBus.$emit("changeLogButton", "Logout")
+
           //save auth header for further requests
           Vue.ls.set('authHeader', response.headers)
 
@@ -86,6 +90,7 @@ export default {
             type: "success"
           })
         }
+
       })
       .catch(function(err) {
         //Notify User

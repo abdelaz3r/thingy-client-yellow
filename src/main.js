@@ -7,7 +7,6 @@ import axios from 'axios'
 import home from './components/home'
 import VueLocalStorage from 'vue-localstorage'
 import Notifications from 'vue-notification'
-import frame from './components/templates/frame'
 
 Vue.use(VueLocalStorage, {
   name: 'ls',
@@ -15,13 +14,15 @@ Vue.use(VueLocalStorage, {
 })
 Vue.use(Notifications)
 
-global.frame = frame
 global.Vue = Vue
 global.axios = axios
 global.api = 'http://localhost:8080/'
+global.EventBus = new Vue();
 
 Vue.config.productionTip = false
 
+Vue.component("home", home)
+Vue.component("App", App)
 
 /* eslint-disable no-new */
 var vue = new Vue({
@@ -36,7 +37,5 @@ var vue = new Vue({
       type: Object
     }
   },
-  template: '<App/>',
-  components: { App, home },
-
+  template: '<App/>'
 });

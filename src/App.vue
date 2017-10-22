@@ -12,7 +12,8 @@
         </div>
         <div class="lefel-right">
           <div class="level-item">
-            <div @click="log" class="button">{{barTitle}}</div>
+            <div @click="log" class="button">{{LogButton}}</div>
+
           </div>
         </div>
       </div>
@@ -25,31 +26,36 @@
 
 <script>
 
-export default {
-  name: 'app',
+module.exports = {
+  name: 'App',
   methods: {
-    //TODO: Change the login button to logout after login
-    //Login/Logout function in the top bar
+
+    //Login/Logout text in the top bar
     log: function() {
+
+      //If user is logged in, log it out
       if(Vue.ls.get("myUser")){
-        console.log(Vue.ls.get("myUser"))
         Vue.ls.set("myUser", null)
-        this.barTitle = "Login"
+        this.LogButton = "Login"
         this.$router.push("/login")
       }
     }
   },
   data: function() {
     return {
-      barTitle: ''
+      LogButton: null
     }
+  },
+  created: function(){
+  	EventBus.$on('changeLogButton', (buttonState)=>{
+      this.LogButton = buttonState;
+    })
   },
   mounted() {
     //make automatically login, if user is logged in
     if(Vue.ls.get("myUser")){
       //set right title
-      this.barTitle = "Logout"
-
+      this.LogButton = "Logout"
       if(Vue.ls.get("myUser").role == "admin") {
         this.$router.push("/admin/dashboard")
       }
@@ -58,7 +64,7 @@ export default {
       }
     }
     else {
-      this.barTitle = "Login"
+      this.LogButton = "Login"
     }
   }
 }
