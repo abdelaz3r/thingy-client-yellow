@@ -12,12 +12,8 @@
 </template>
 
 <script>
-import dashboard from '../templates/dashboard'
 
 export default {
-  components: {
-    dashboard
-  },
   data: function() {
     return {
       display: false

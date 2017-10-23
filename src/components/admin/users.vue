@@ -22,10 +22,9 @@
               <th><input class="input minsize120" v-model="addLastname"></th>
               <th><input class="input minsize120" v-model="addEmail"></th>
               <th>
-                <div class="select" v-model="addAdmin">
+                <div class="select" @change="onChange($event.target.value)">
                   <select>
-                    <option>user</option>
-                    <option>admin</option>
+                    <option  v-for="role in roles" v-bind:value="role.name">{{role.name}}</option>
                   </select>
                 </div>
               </th>
@@ -49,17 +48,16 @@
                 @blur="save(user)">
               </th>
               <th>
-                <div class="select" v-model="user.admin">
+                <div class="select" @change="save(user, $event.target.value)">
                   <select>
-                    <option>user</option>
-                    <option>admin</option>
+                    <option  v-for="role in roles" v-bind:value="role.name" :selected="role.name == user.role">{{role.name}}</option>
                   </select>
                 </div>
               </th>
               <th>
                 <input class="input" value="set new password"
-                @keyup.enter="save(user, $event.target.value)"
-                @blur="save(user, $event.target.value)">
+                @keyup.enter="save(user, user.role, $event.target.value)"
+                @blur="save(user, user.role, $event.target.value)">
               </th>
               <th>
                 <button class="button is-danger" v-on:click="del(user.userId)">Delete</button>
@@ -73,30 +71,31 @@
 </template>
 
 <script>
-/*
-  TODO: Handle errors from api
-*/
-import dashboard from '../templates/dashboard'
 
 export default {
-  components: {
-    dashboard
-  },
   data: function() {
     return {
       addFirstname: '',
       addLastname: '',
       addEmail: '',
-      addAdmin: '',
+      addRole: 'user',
       addPassword: '',
       display: true,
-      users: []
+      users: [],
+      roles: [
+        {name: "user"},
+        {name: "admin"}
+      ]
     }
   },
   mounted() {
     this.getAllUsers()
   },
   methods: {
+    onChange: function(role) {
+      this.addRole = role
+    },
+
     //load list from api, when components are fully loaded
     getAllUsers: function() {
       var self = this
@@ -109,13 +108,14 @@ export default {
       })
     },
     //update user
-    save: function(user, password) {
+    save: function(user, role, password) {
       var self = this
       axios.post(api + 'users/' + user.userId, {
         firstname: user.firstname,
         lastname: user.lastname,
         email: user.email,
-        password: password
+        password: password,
+        role: role
       })
       .then(function(response) {
 
@@ -182,12 +182,15 @@ export default {
     },
 
     addNewUser: function() {
+      console.log("selected: " + this.addRole)
+
       var self = this
       axios.post(api + 'users', {
         firstname: this.addFirstname,
         lastname: this.addLastname,
         email: this.addEmail,
-        password: this.addPassword
+        password: this.addPassword,
+        role: this.addRole
       })
       .then(function(response) {
 
@@ -196,7 +199,8 @@ export default {
           userId: response.data.userId,
           firstname: self.addFirstname,
           lastname: self.addLastname,
-          email: self.addEmail
+          email: self.addEmail,
+          role: self.addRole
         })
 
         //empty form
@@ -204,6 +208,7 @@ export default {
         self.addFirstname = ''
         self.addLastname = ''
         self.addEmail = ''
+        self.addRole = 'user'
 
         if(response.status == 200) {
           self.$notify({

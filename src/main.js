@@ -8,6 +8,9 @@ import home from './components/home'
 import VueLocalStorage from 'vue-localstorage'
 import Notifications from 'vue-notification'
 
+//Import components
+import dashboard from './components/templates/dashboard'
+
 Vue.use(VueLocalStorage, {
   name: 'ls',
   createComputed: true //created computed members from your variable declarations
@@ -24,6 +27,7 @@ Vue.config.productionTip = false
 
 Vue.component("home", home)
 Vue.component("App", App)
+Vue.component("dashboard", dashboard)
 
 /* eslint-disable no-new */
 var vue = new Vue({

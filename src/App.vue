@@ -64,6 +64,7 @@ module.exports = {
 
     //if user is not logged in, set logButton to Login
     else {
+      this.$router.push("/login")
       this.LogButton = "Login"
     }
   }
