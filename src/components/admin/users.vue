@@ -29,26 +29,26 @@
                 </div>
               </th>
               <th><input class="input minsize120" v-model="addPassword"></th>
-              <th><button class="button is-success" @click="addNewUser">Add</button></th>
+              <th><button class="button is-success" @click="add">Add</button></th>
             </tr>
             <tr class="input_as_textfield" v-for="user in users">
               <th>
                 <input class="input" v-model="user.firstname"
-                @keyup.enter="save(user)"
-                @blur="save(user)">
+                @keyup.enter="update(user)"
+                @blur="update(user)">
               </th>
               <th>
                 <input class="input" v-model="user.lastname"
-                @keyup.enter="save(user)"
-                @blur="save(user)">
+                @keyup.enter="update(user)"
+                @blur="update(user)">
               </th>
               <th>
                 <input class="input" type="email" v-model="user.email"
-                @keyup.enter="save(user)"
-                @blur="save(user)">
+                @keyup.enter="update(user)"
+                @blur="update(user)">
               </th>
               <th>
-                <div class="select" @change="save(user, $event.target.value)">
+                <div class="select" @change="update(user, $event.target.value)">
                   <select>
                     <option  v-for="role in roles" v-bind:value="role.name" :selected="role.name == user.role">{{role.name}}</option>
                   </select>
@@ -56,8 +56,8 @@
               </th>
               <th>
                 <input class="input" value="set new password"
-                @keyup.enter="save(user, user.role, $event.target.value)"
-                @blur="save(user, user.role, $event.target.value)">
+                @keyup.enter="update(user, user.role, $event.target.value)"
+                @blur="update(user, user.role, $event.target.value)">
               </th>
               <th>
                 <button class="button is-danger" v-on:click="del(user.userId)">Delete</button>
@@ -107,7 +107,7 @@ export default {
       })
     },
     //update user
-    save: function(user, role, password) {
+    update: function(user, role, password) {
       var self = this
       axios.post(api + 'users/' + user.userId, {
         firstname: user.firstname,
@@ -180,7 +180,7 @@ export default {
       })
     },
 
-    addNewUser: function() {
+    add: function() {
       console.log("selected: " + this.addRole)
 
       var self = this
