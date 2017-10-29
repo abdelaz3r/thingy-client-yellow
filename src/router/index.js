@@ -39,16 +39,19 @@ export default new Router({
       component: adminMachines
     },
     {
-      path: '/admin/configuration/:mac',
+      name: 'configuration',
+      path: '/admin/configuration',
       component: adminConfiguration,
       props: true
     },
     {
-      path: '/admin/statistics/:mac',
+      name: 'statistics',
+      path: '/admin/statistics',
       component: adminStatistics,
       props: true
     },
     {
+      name: 'programs',
       path: '/admin/programs',
       component: adminPrograms
     },

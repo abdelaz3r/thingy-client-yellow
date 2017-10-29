@@ -2,19 +2,26 @@
   <div>
     <dashboard :display="true">
       <div slot="title">
-        Statistics
+        Statistics of <p style="font-weight: bold; display: inline"> {{machine.name}}</p>
+        with MAC <p style="font-weight: bold; display: inline;">{{machine.mac}}</p>
       </div>
-      Actual Mac: {{mac}}
+      Actual Mac:
     </dashboard>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["mac"],
+  props: ['machine'],
   data: function() {
     return {
+
     }
+  },
+  methods: {
+
+  },
+  mounted() {
   }
 }
 </script>

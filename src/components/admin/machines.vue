@@ -52,17 +52,17 @@
               <th>
                 <router-link
                 class="button is-warning"
-                :to="{ path: 'configuration/' + machine.mac }">Configuration</router-link>
+                :to="{ name: 'configuration', params:{machine: machine} }">Configuration</router-link>
               </th>
               <th>
                 <router-link
                 class="button is-info"
-                :to="{ path: 'statistics/' + machine.mac }">Statistics</router-link>
+                :to="{ name: 'statistics', params:{machine: machine} }">Statistics</router-link>
               </th>
               <th>
                 <router-link
                 class="button is-link"
-                :to="{ path: 'programs' }">Programs</router-link>
+                :to="{ name: 'programs' }">Programs</router-link>
               </th>
               <th>
                 <button class="button is-danger" @click="del(machine)">Delete</button>
