@@ -1,6 +1,6 @@
 <template>
   <div>
-    <dashboard :display="display">
+    <dashboard :display="true">
       <div slot="title">
         Manage Users
       </div>
@@ -80,7 +80,6 @@ export default {
       addEmail: '',
       addRole: 'user',
       addPassword: '',
-      display: true,
       users: [],
       roles: [
         {name: "user"},
@@ -194,14 +193,8 @@ export default {
       })
       .then(function(response) {
 
-        //Add User to local array
-        self.users.unshift({
-          userId: response.data.userId,
-          firstname: self.addFirstname,
-          lastname: self.addLastname,
-          email: self.addEmail,
-          role: self.addRole
-        })
+        //Update user list
+        self.getAllUsers()
 
         //empty form
         self.addPassword = ''

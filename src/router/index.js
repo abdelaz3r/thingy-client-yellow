@@ -5,6 +5,9 @@ import home from '@/components/home'
 import adminDashboard from '@/components/admin/dashboard'
 import adminUsers from '@/components/admin/users'
 import adminMachines from '@/components/admin/machines'
+import adminConfiguration from '@/components/admin/configuration'
+import adminPrograms from '@/components/admin/programs'
+import adminStatistics from '@/components/admin/statistics'
 
 //USER components
 import userDashboard from '@/components/user/dashboard'
@@ -34,6 +37,20 @@ export default new Router({
     {
       path: '/admin/machines',
       component: adminMachines
+    },
+    {
+      path: '/admin/configuration/:mac',
+      component: adminConfiguration,
+      props: true
+    },
+    {
+      path: '/admin/statistics/:mac',
+      component: adminStatistics,
+      props: true
+    },
+    {
+      path: '/admin/programs',
+      component: adminPrograms
     },
 
     //USER PATH
