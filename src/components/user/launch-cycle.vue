@@ -1,6 +1,6 @@
 <template>
   <div>
-    <dashboard>
+    <dashboard :display="true">
       <div slot="title">
         Machine cycle launch station
       </div>
