@@ -7,7 +7,7 @@
       <div class="columns">
         <div class="column">
           <a href="#/user/launch-cycle">
-            <div class="notification is-warning subtitle is-4">Launch cycle</div>
+            <div class="notification is-warning subtitle is-4">Launch a cycle</div>
           </a>
         </div>
         <div class="column">
@@ -31,7 +31,6 @@
 </template>
 
 <script>
-
 export default {
   data: function() {
     return {
@@ -39,9 +38,22 @@ export default {
     }
   }
 }
-
 </script>
 
 <style>
+.notification {
+  text-align: center;
+}
 
+.notification.is-warning {
+  color: white;
+}
+
+.panel {
+  padding-top: 10vh;
+}
+
+.columns {
+  width: 100%
+}
 </style>

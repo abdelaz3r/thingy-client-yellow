@@ -48,7 +48,6 @@ export default {
 </script>
 
 <style>
-
 .notification {
   text-align: center;
 }
