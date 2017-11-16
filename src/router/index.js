@@ -8,6 +8,7 @@ import adminMachines from '@/components/admin/machines'
 import adminLiveData from '@/components/admin/liveData'
 import adminPrograms from '@/components/admin/programs'
 import adminStatistics from '@/components/admin/statistics'
+import adminRelatedPrograms from '@/components/admin/relatedprograms'
 
 //USER components
 import userDashboard from '@/components/user/dashboard'
@@ -55,6 +56,12 @@ export default new Router({
       name: 'programs',
       path: '/admin/programs',
       component: adminPrograms
+    },
+    {
+      name: 'relatedPrograms',
+      path: '/admin/relatedPrograms',
+      component: adminRelatedPrograms,
+      props: true
     },
 
     //USER PATH

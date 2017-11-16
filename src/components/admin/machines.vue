@@ -70,7 +70,7 @@
               <td>
                 <router-link
                 class="button is-link"
-                :to="{ name: 'programs' }">Related Programs</router-link>
+                :to="{ name: 'relatedPrograms', params:{machine: machine} }">Related Programs</router-link>
               </td>
               <td>
                 <button class="button is-danger" @click="del(machine)">Delete</button>
