@@ -23,9 +23,7 @@
           </a>
         </div>
         <div class="column">
-          <a href="#/admin/invoices">
-            <div class="notification is-danger subtitle is-4">Invoices</div>
-          </a>
+          <router-link class="notification is-link is-4 subtitle" :to="{ name: 'programs' }">Programs</router-link>
         </div>
       </div>
     </dashboard>

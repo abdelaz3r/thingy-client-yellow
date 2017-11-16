@@ -10,6 +10,9 @@
           <thead>
             <tr>
               <th>
+                State
+              </th>
+              <th>
                 Name
               </th>
               <th>
@@ -28,45 +31,50 @@
           </thead>
           <tbody>
             <tr>
-              <th>
+              <td>
+              </td>
+              <td>
                 <input class="input" v-model="addName">
-              </th>
-              <th>
+              </td>
+              <td>
                 <input class="input" v-model="addMac">
-              </th>
-              <th>
+              </td>
+              <td>
                 <button class="button is-success" @click="add">Add</button>
-              </th>
+              </td>
             </tr>
             <tr class="input_as_textfield" v-for="machine in machines">
-              <th>
+              <td>
+                {{getStateText(machine)}}
+              </td>
+              <td>
                 <input class="input" v-model="machine.name"
                 @blur="update(machine)"
                 @keyup.enter="update(machine)">
-              </th>
-              <th>
+              </td>
+              <td>
                 <input class="input" v-model="machine.mac"
                 @blur="update(machine)"
                 @keyup.enter="update(machine)">
-              </th>
-              <th>
+              </td>
+              <td>
                 <router-link
                 class="button is-warning"
-                :to="{ name: 'configuration', params:{machine: machine} }">Configuration</router-link>
-              </th>
-              <th>
+                :to="{ name: 'liveData', params:{machine: machine} }">Live Data</router-link>
+              </td>
+              <td>
                 <router-link
                 class="button is-info"
                 :to="{ name: 'statistics', params:{machine: machine} }">Statistics</router-link>
-              </th>
-              <th>
+              </td>
+              <td>
                 <router-link
                 class="button is-link"
-                :to="{ name: 'programs' }">Programs</router-link>
-              </th>
-              <th>
+                :to="{ name: 'programs' }">Related Programs</router-link>
+              </td>
+              <td>
                 <button class="button is-danger" @click="del(machine)">Delete</button>
-              </th>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -83,13 +91,45 @@ export default {
     return {
       machines: [],
       addName: '',
-      addMac: '',
+      addMac: ''
     }
   },
   mounted() {
     this.getAllMachines()
   },
   methods: {
+
+    //returns a text for the actual state of a machine
+    getStateText: function(machine) {
+
+      if(machine.live.cycle == null){
+        return "No state available"
+      }
+      else {
+        switch (machine.live.cycle.state) {
+          case "DETERMINED":
+            return "The washing cycle has been finished"
+            break;
+
+          case "LEARNING":
+            return "The machine is learning at the moment"
+            break;
+
+          case "READY":
+            return "Ready to take off!"
+            break;
+
+          case "DETERMINING":
+            return "The algorithm is working in the background"
+            break;
+
+          default:
+            return "Mierda! Algo no functiona. Pregunta a Trump para resolver el problema!"
+            break;
+        }
+      }
+    },
+
     getAllMachines: function() {
       var self = this
       //get all machines form api
@@ -155,7 +195,7 @@ export default {
 
     update: function(machine) {
       var self = this
-      axios.post(api + "machines/" + machine.machineId, {
+      axios.put(api + "machines/" + machine.machineId, {
         name: machine.name,
         mac: machine.mac
       })

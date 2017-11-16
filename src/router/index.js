@@ -5,7 +5,7 @@ import home from '@/components/home'
 import adminDashboard from '@/components/admin/dashboard'
 import adminUsers from '@/components/admin/users'
 import adminMachines from '@/components/admin/machines'
-import adminConfiguration from '@/components/admin/configuration'
+import adminLiveData from '@/components/admin/liveData'
 import adminPrograms from '@/components/admin/programs'
 import adminStatistics from '@/components/admin/statistics'
 
@@ -40,9 +40,9 @@ export default new Router({
       component: adminMachines
     },
     {
-      name: 'configuration',
-      path: '/admin/configuration',
-      component: adminConfiguration,
+      name: 'liveData',
+      path: '/admin/liveData',
+      component: adminLiveData,
       props: true
     },
     {

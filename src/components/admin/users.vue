@@ -109,7 +109,7 @@ export default {
     //update user
     update: function(user, role, password) {
       var self = this
-      axios.post(api + 'users/' + user.userId, {
+      axios.put(api + 'users/' + user.userId, {
         firstname: user.firstname,
         lastname: user.lastname,
         email: user.email,

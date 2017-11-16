@@ -203,7 +203,7 @@
       },
       getConfig: function() {
         var self = this
-        axios.get(api + this.machine.mac + "/setup")
+        axios.get(api + "gateway/" + this.machine.mac + "/setup")
         .then(function(response) {
           self.config = response.data
         })
