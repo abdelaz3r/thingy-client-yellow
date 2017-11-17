@@ -45,7 +45,17 @@
             </tr>
             <tr class="input_as_textfield" v-for="machine in machines">
               <td>
-                {{getStateText(machine)}}
+
+                <div v-show="getStateText(machine) == 'READY' ? true:false">
+                  <button class="button is-success" @click="startMachine(machine)">
+                    Start the machine
+                  </button>
+                </div>
+
+                <div v-show="getStateText(machine) == 'READY' ? false:true">
+                  {{getStateText(machine)}}
+                </div>
+
               </td>
               <td>
                 <input class="input" v-model="machine.name"
@@ -94,6 +104,13 @@ export default {
   },
   methods: {
 
+    //make the machine washing
+    //TODO: write this method
+    //TODO: Make actualization of the states of the machines
+    startMachine: function() {
+      var self = this
+    },
+
     //returns a text for the actual state of a machine
     getStateText: function(machine) {
 
@@ -111,7 +128,7 @@ export default {
             break;
 
           case "READY":
-            return "Ready to take off!"
+            return "READY"
             break;
 
           case "DETERMINING":

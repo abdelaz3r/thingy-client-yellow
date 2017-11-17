@@ -221,11 +221,14 @@ export default {
 
     },
 
+    //
     deleteCycle: function(cycle) {
       var self = this
       axios.delete(api + "programs/" + this.programFilter.programId + "/machine/" + this.machine.machineId + "/learning/" + cycle.recordingId)
       .then(function(response) {
         if(response.status == 200){
+
+          //update list
           self.getRecordedCycles
 
           self.$notify({
@@ -382,12 +385,15 @@ export default {
     },
 
     //start machine learning
+    //TODO: Actualize the state of the machine
     recordMc: function() {
       var self = this
       //console.log(api + 'programs/' + this.selectedMcProgram.programId + '/machine/' + this.machine.machineId + '/learning/start')
       axios.post(api + 'programs/' + this.selectedMcProgram.programId + '/machine/' + this.machine.machineId + '/learning/start')
       .then( function( response ) {
         if(response.status == 200) {
+
+          //TODO: Actualize the state of the machine
 
           //empty dropdown
           self.selectedMcProgram = ''
@@ -443,11 +449,15 @@ export default {
       })
     },
 
+    //TODO: Make actualization of the state of the machine after stopping
     stopLearning: function() {
       var self = this
       axios.post(api + "machines/" + this.machine.machineId + "/learning/stop")
       .then(function(response) {
         if(response.status == 200) {
+
+          //TODO: Make actualization of the state of the machine
+
           self.$notify({
             title: "Recording cycle stopped",
             type: "success"
