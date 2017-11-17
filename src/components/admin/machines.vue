@@ -59,18 +59,13 @@
               </td>
               <td>
                 <router-link
-                class="button is-warning"
-                :to="{ name: 'liveData', params:{machine: machine} }">Live Data</router-link>
-              </td>
-              <td>
-                <router-link
                 class="button is-info"
                 :to="{ name: 'statistics', params:{machine: machine} }">Statistics</router-link>
               </td>
               <td>
                 <router-link
                 class="button is-link"
-                :to="{ name: 'relatedPrograms', params:{machine: machine} }">Related Programs</router-link>
+                :to="{ name: 'configuration', params:{machine: machine} }">Configuration</router-link>
               </td>
               <td>
                 <button class="button is-danger" @click="del(machine)">Delete</button>

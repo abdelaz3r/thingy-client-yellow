@@ -1,229 +1,451 @@
 <template>
   <div>
-    <dashboard :display="display">
+
+    <dashboard :display="true">
       <div slot="title">
-        Configuration of <p style="font-weight: bold; display: inline"> {{machine.name}}</p>
-        with MAC <p style="font-weight: bold; display: inline;">{{machine.mac}}</p>
+        Machine Learning with <p style="display: inline; font-weight: bold;">{{ machine.name }}</p>
       </div>
-      <div class="input_as_textfield">
-        <div class="tabs is-centered is-boxed is-medium">
-          <ul>
-            <li :class="{ 'is-active': tabs.temperature }">
-              <a @click="toggleTab('temperature')">Temperature</a>
-            </li>
-            <li :class="{ 'is-active': tabs.pressure }">
-              <a @click="toggleTab('pressure')">Pressure</a>
-            </li>
-            <li :class="{ 'is-active': tabs.humidity }">
-              <a @click="toggleTab('humidity')">Humidity</a>
-            </li>
-            <li :class="{ 'is-active': tabs.color }">
-              <a @click="toggleTab('color')">Color</a>
-            </li>
-            <li :class="{ 'is-active': tabs.gas }">
-              <a @click="toggleTab('gas')">Gas</a>
-            </li>
-            <li :class="{ 'is-active': tabs.motion}">
-              <a @click="toggleTab('motion')">Motion</a>
-            </li>
-          </ul>
-        </div>
-        <div v-if="tabs.temperature">
-          <div class="field is-horizontal">
-            <div class="field-label is-normal">
-              <label class="label">Interval: </label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <input class="input" type="text">
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <div v-if="tabs.pressure">
-          <div class="field is-horizontal">
-            <div class="field-label is-normal">
-              <label class="label">Interval: </label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <input class="input" type="text">
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="table-scroll">
+        <br>
+        <table class="table is-fullwidth">
+          <tbody>
 
-        <div v-if="tabs.humidity">
-          <div class="field is-horizontal">
-            <div class="field-label is-normal">
-              <label class="label">Interval: </label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <input class="input" type="text">
-              </div>
-            </div>
-          </div>
-        </div>
+            <!-- show this section, if Machine is ready -->
+            <tr v-show="this.state == 'READY' ? true : false ">
+                <td>
+                  <div class="select">
+                    <select v-model="selectedMcProgram">
+                      <option v-for="mcProgram in relatedPrograms" :value="mcProgram">{{ mcProgram.cyclename }}</option>
+                    </select>
+                  </div>
+                </td>
+                <td>
+                  <button class="button is-success" :disabled="selectedMcProgram.cyclename == null" @click="recordMc">
+                    {{ relatedPrograms.length > 0 ? ( selectedMcProgram.cyclename == null ? 'Select a program to record' : 'Record the ' + selectedMcProgram.cyclename + ' program' ) : 'Relate a washing program to the machine' }}
+                  </button>
+                </td>
+            </tr>
 
-        <div v-if="tabs.color">
-          <div class="field is-horizontal">
-            <div class="field-label is-normal">
-              <label class="label">Interval: </label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <input class="input" type="text">
-              </div>
-            </div>
-          </div>
-        </div>
+            <!-- show this section, if the machine is not ready -->
+            <tr v-show="state == 'READY' ? false : true ">
+                <td>
+                  The Machine is {{ state }} at the moment
+                </td>
+                <td>
+                  <button class="button is-danger" @click="stopLearning">
+                    Stop Learning
+                  </button>
+                </td>
+            </tr>
 
-        <div v-if="tabs.gas">
-          <div class="field is-horizontal">
-            <div class="field-label is-normal">
-              <label class="label">Interval: </label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <input class="input" type="text">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div v-if="tabs.motion" >
-          <div class="field is-horizontal">
-            <div class="field-label is-normal">
-              <label class="label">Step Counter Interval (MS): </label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <input class="input" type="text">
-              </div>
-            </div>
-          </div>
-          <div class="field is-horizontal">
-            <div class="field-label is-normal">
-              <label class="label">Temperature Compensation Interval (MS): </label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <input class="input" type="text">
-              </div>
-            </div>
-          </div>
-          <div class="field is-horizontal">
-            <div class="field-label is-normal">
-              <label class="label">Magnetometer Compensation Interval (MS): </label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <input class="input" type="text">
-              </div>
-            </div>
-          </div>
-          <div class="field is-horizontal">
-            <div class="field-label is-normal">
-              <label class="label">Motion Processing Frequency (Hz): </label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <input class="input" type="text">
-              </div>
-            </div>
-          </div>
-          <div class="field is-horizontal">
-            <div class="field-label is-normal">
-              <label class="label">Wake On Motion: </label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <input class="input" type="text">
-              </div>
-            </div>
-          </div>
-        </div>
+          </tbody>
+        </table>
       </div>
     </dashboard>
+
+    <dashboard>
+      <div slot="title">
+        All recorded machine learning cycles for <p style="display: inline; font-weight: bold;">{{ machine.name }}</p>
+      </div>
+
+      <div class="table-scroll">
+        <!-- show all recorded cycles -->
+        <div class="select">
+          <select v-model="programFilter" @change="getRecordedCycles">
+            <option v-for="program in allPrograms" :value="program">{{ program.cyclename }}</option>
+          </select>
+        </div>
+
+        <table class="table is-fullwidth is-hoverable">
+          <thead>
+            <tr>
+              <th>
+                Washing Program
+              </th>
+              <th>
+                Duration
+              </th>
+              <th>
+                Started
+              </th>
+              <th>
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="cycle in cycles">
+              <td>
+
+              </td>
+              <td>
+              </td>
+              <td>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </dashboard>
+
+    <dashboard>
+      <div slot="title">
+        Related Programs to the machine <p style="display: inline; font-weight: bold;">{{ machine.name }}</p>
+      </div>
+
+      <div class="table-scroll">
+        <table class="table is-fullwidth is-hoverable">
+          <thead>
+            <tr>
+              <th>
+                Name
+              </th>
+              <th>
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="select">
+                  <select v-model="selectedProgram">
+                    <option v-for="program in remainingPrograms" :value="program" :selected="true">{{ program.cyclename }}</option>
+                  </select>
+                </div>
+              </td>
+              <td>
+                <button class="button is-success" :disabled="selectedProgram.cyclename == null" @click="relate">
+                  {{ selectedProgram.cyclename == null ? 'Select a program to relate to the machine' : 'Relate ' + selectedProgram.cyclename + ' to the machine'}}
+                </button>
+              </td>
+              <td>
+                <router-link v-on:click.native="addTempNavMachine" :to="{ name: 'programs' }">Edit all programs</router-link>
+              </td>
+            </tr>
+            <tr class="input_as_textfield" v-for="relatedProgram in relatedPrograms">
+              <td>
+                <input class="input" v-model="relatedProgram.cyclename"
+                @blur="update(relatedProgram)"
+                @keyup.enter="update(relatedProgram)">
+              </td>
+              <td>
+                <button class="button is-danger" @click="unrelate(relatedProgram)">delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </dashboard>
+
+    <dashboard>
+      <div slot="title">
+        Live Data
+      </div>
+
+      <br>
+      Humidity: {{machine.live.sensors.humidity}}
+      <br>
+      Temperature: {{machine.live.sensors.temperature}}
+      <br>
+      State: {{state}}
+
+    </dashboard>
+
   </div>
 </template>
 
 <script>
-  export default {
-    data: function() {
-      return {
-        display: true,
-        machine: this.$route.params.machine,
-        config: [],
-        displayTemperature: false,
-        tabs: {
-          temperature: true,
-          pressure: false,
-          humidity: false,
-          color: false,
-          gas: false,
-          motion: false
-        }
+export default {
+  data: function() {
+    return {
+      machine: '',
+      relatedPrograms: [],
+      allPrograms: [],
+      remainingPrograms: [],
+      cycles: [],
+      selectedProgram: '',
+      selectedMcProgram: '',
+      state: '',
+      programFilter: ''
+    }
+  },
+  mounted() {
+    //get and set the groundlaying data
+    this.getMachine()
+    this.getPrograms(false)
+    this.getPrograms(true)
+
+    //get the actual state of the machine
+    if(this.machine.live.cycle == null) {
+      this.state = "No state available at the moment"
+    }
+    else {
+      this.state = this.machine.live.cycle.state
+    }
+  },
+  methods: {
+
+    //get all recorded cycles for that machine depending on the filter
+    getRecordedCycles: function() {
+      var self = this
+      //axios.get(api + "programs/" + )
+    },
+
+    //get the actual state of the machine
+    getState: function() {
+
+    },
+
+    // load the actual machine
+    getMachine: function(){
+      //if we come back from all programs load the machine stored in the local store
+      if (typeof this.$route.params.machine == 'undefined'){
+        this.machine = Vue.ls.get("tempNavMachine")
+      }
+
+      //if we come from the machine overview get the machine object from the router props
+      else {
+        this.machine = this.$route.params.machine
       }
     },
 
-    methods: {
-      toggleTab: function(tab) {
-        //disable all tabs
-      this.tabs.temperature = false
-      this.tabs.pressure = false
-      this.tabs.humidity = false
-      this.tabs.color = false
-      this.tabs.gas = false
-      this.tabs.motion = false
+    //add the actual machine to the local store if we navigate to all Programs
+    //So that when we come back, we still have the machine object available
+    addTempNavMachine: function() {
+      Vue.ls.set("tempNavMachine", this.machine)
+    },
 
-        //make tab active
-        switch (tab) {
-          case 'temperature':
-            this.tabs.temperature = true
-            break;
-          case 'pressure':
-            this.tabs.pressure = true
-            break;
-          case 'humidity':
-            this.tabs.humidity = true
-            break
-          case 'color':
-            this.tabs.color = true
-            break
-          case 'gas':
-            this.tabs.gas = true
-            break
-          case 'motion':
-            this.tabs.motion = true
-            break
+    //Diff Porgram Arrays
+    diffPrograms: function(array1, array2){
+      for(var i = 0; i < array1.length; i++) {
+        for(var b = 0; b < array2.length; b++) {
+          if(array1[i].cyclename == array2[b].cyclename) {
+            array1.splice(i, 1)
+          }
         }
-      },
-      getConfig: function() {
-        var self = this
-        axios.get(api + "gateway/" + this.machine.mac + "/setup")
+      }
+      return array1
+    },
+
+    //list all programs
+    getPrograms: function(onlyRelated = true) {
+
+      var url = api + "programs"
+
+      if(onlyRelated) {
+        url += "/machine/" + this.machine.machineId
+      }
+
+      //get programs from api
+      var self = this;
+      axios.get(url)
+      .then(function(response) {
+        if(onlyRelated) {
+          self.relatedPrograms = response.data
+        }
+        else {
+          self.allPrograms = response.data
+        }
+
+        var tmpAllPrograms = self.allPrograms.slice()
+
+        //only show programs which can still added to the machine
+        self.remainingPrograms = self.diffPrograms(tmpAllPrograms, self.relatedPrograms)
+      })
+      .catch(function(err) {
+        self.$notify({
+          title: "Error getting the program list",
+          text: err.response.status,
+          type: "error"
+        })
+      })
+    },
+
+    //relate program to machine
+    relate: function() {
+      var self = this
+
+      //Check first, if a program is selected. If not show error notification
+      if(this.selectedProgram.programId == null) {
+        this.$notify({
+          title: "No Program selected!",
+          text: "Please select a program from the dropdown to relate to the machine",
+          type: "error"
+        })
+      }
+
+      //if so, relate the program to the machine
+      else {
+        axios.post(api + "programs/machine", {
+          programid: this.selectedProgram.programId,
+          machineid: this.machine.machineId
+        })
         .then(function(response) {
-          self.config = response.data
+          if(response.status == 200){
+
+            //update program list
+            self.getPrograms(true)
+
+            //delete from selection
+            self.selectedProgram = ''
+
+            self.$notify({
+              title: "Program related",
+              type: "success"
+            })
+          }
         })
         .catch(function(err) {
           self.$notify({
             title: "Error",
-            text: "Cannot load config",
+            text: err.response.status,
             type: "error"
           })
         })
       }
     },
 
-    mounted() {
-      this.getConfig()
+    //unrelate program from the machine
+    unrelate: function(program) {
+      console.log("machine id: " + this.machine.machineId + " programid: " + program.programId)
+      var self = this
+      axios.delete(api + "programs/machine", {
+        programid: program.programId,
+        machineid: this.machine.machineId
+      })
+      .then(function(response) {
+        if(response.status == 200) {
+          //update program list
+          self.getPrograms(true)
+          self.getPrograms(false)
+
+          //notify user
+          self.$notify({
+            title: "Unrelated the program from the machine",
+            type: "success"
+          })
+        }
+      })
+      .catch(function(err) {
+        self.$notify({
+          title: "Error",
+          text: err.response.status,
+          type: "error"
+        })
+      })
+    },
+
+    //start machine learning
+    recordMc: function() {
+      var self = this
+      //console.log(api + 'programs/' + this.selectedMcProgram.programId + '/machine/' + this.machine.machineId + '/learning/start')
+      axios.post(api + 'programs/' + this.selectedMcProgram.programId + '/machine/' + this.machine.machineId + '/learning/start')
+      .then( function( response ) {
+        if(response.status == 200) {
+
+          //empty dropdown
+          self.selectedMcProgram = ''
+
+          self.$notify({
+            title: "Machine Learning started",
+            type: "success"
+          })
+        }
+      })
+      .catch( function( err ) {
+
+        self.selectedMcProgram = ''
+
+        switch (err.response.status) {
+          case 400:
+            self.$notify({
+              title: "Error 400",
+              text: "Invalid parameters provided",
+              type: "error"
+            })
+            break;
+
+          case 409:
+            self.$notify({
+              title: "Error 409",
+              text: 'A learning cycle is already started for this machine or the machine is currently being used',
+              type: "error"
+            })
+            break;
+
+          case 422:
+            self.$notify({
+              title: "Error 422",
+              text: 'Input schema error',
+              type: "error"
+            })
+            break;
+
+          case 500:
+            self.$notify({
+              title: "Error 500",
+              text: 'Internal error',
+              type: "error"
+            })
+
+          default:
+            self.$notify({
+              title: "Error " + err.response.status,
+              type: "error"
+            })
+        }
+      })
+    },
+
+    stopLearning: function() {
+      var self = this
+      axios.post(api + "machines/" + this.machine.machineId + "/learning/stop")
+      .then(function(response) {
+        if(response.status == 200) {
+          self.$notify({
+            title: "Recording cycle stopped",
+            type: "success"
+          })
+        }
+      })
+      .catch(function(err) {
+        switch (err.response.status) {
+          case 400:
+            self.$notify({
+              title: "Error " + err.response.status,
+              text: "No cycle was being recorded on the specified machine",
+              type: "error"
+            })
+            break;
+
+          case 406:
+            self.$notify({
+              title: "Error " + err.response.status,
+              text: "The recording failed because it was too short",
+              type: "error"
+            })
+            break;
+
+          default:
+            self.$notify({
+              title: "Error " + err.response.status,
+              type: "error"
+            })
+        }
+      })
     }
   }
+}
+
 </script>
 
 <style>
+.table-scroll {
+  overflow-x:auto;
+}
+
 .input_as_textfield input {
   box-shadow: none;
   border: none;
