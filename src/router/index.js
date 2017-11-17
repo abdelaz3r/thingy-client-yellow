@@ -55,7 +55,8 @@ export default new Router({
     {
       name: 'programs',
       path: '/admin/programs',
-      component: adminPrograms
+      component: adminPrograms,
+      props: true
     },
     {
       name: 'relatedPrograms',

@@ -40,6 +40,9 @@ var vue = new Vue({
     },
     myUser: {
       type: Object
+    },
+    tempNavMachine: {
+      type: Object
     }
   },
   template: '<App/>'

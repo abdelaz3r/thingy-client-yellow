@@ -48,7 +48,8 @@ export default {
   data: function() {
     return {
       programs: [],
-      addName: ''
+      addName: '',
+      navigateTempMachine: this.$route.params.machine
     }
   },
   mounted() {
