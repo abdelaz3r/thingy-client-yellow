@@ -64,7 +64,7 @@
                 Washing Program
               </th>
               <th>
-                Duration
+                Duration (ms)
               </th>
               <th>
                 Started
@@ -77,11 +77,18 @@
           <tbody>
             <tr v-for="cycle in cycles">
               <td>
-
+                {{ cycle.cyclename }}
               </td>
               <td>
+                {{ cycle.duration }}
               </td>
               <td>
+                {{ cycle.started }}
+              </td>
+              <td>
+                <button class="button is-danger" @click="deleteCycle(cycle)">
+                  delete
+                </button>
               </td>
             </tr>
           </tbody>
@@ -190,12 +197,49 @@ export default {
     //get all recorded cycles for that machine depending on the filter
     getRecordedCycles: function() {
       var self = this
-      //axios.get(api + "programs/" + )
+      axios.get(api + "programs/" + this.programFilter.programId + "/machine/" + this.machine.machineId + "/learning")
+      .then(function(response) {
+        if(response.status == 200){
+          self.cycles = response.data
+
+          self.$notify({
+            title: "Loaded the learning cycles",
+            type: "success"
+          })
+        }
+      })
+      .catch(function(err) {
+        self.$notify({
+          title: "Error " + err.response.status,
+          type: "error"
+        })
+      })
     },
 
     //get the actual state of the machine
     getState: function() {
 
+    },
+
+    deleteCycle: function(cycle) {
+      var self = this
+      axios.delete(api + "programs/" + this.programFilter.programId + "/machine/" + this.machine.machineId + "/learning/" + cycle.recordingId)
+      .then(function(response) {
+        if(response.status == 200){
+          self.getRecordedCycles
+
+          self.$notify({
+            title: "Deleted record",
+            type: "success"
+          })
+        }
+      })
+      .catch(function(err) {
+        self.$notify({
+          title: "Error" + err.response.status,
+          type: "error"
+        })
+      })
     },
 
     // load the actual machine
