@@ -503,8 +503,10 @@ export default {
           //Make actualization of the state of the machine
           self.actualizeMachine()
 
-          //actualizes the recorded cycles
-          self.getRecordedCycles()
+          //actualizes the recorded cycles, if any is selected
+          if(! self.programFilter == '') {
+              self.getRecordedCycles()
+          }
 
           self.$notify({
             title: "Recording cycle stopped",
