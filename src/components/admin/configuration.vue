@@ -3,7 +3,7 @@
 
     <dashboard :display="true">
       <div slot="title">
-        Machine Learning with <p style="display: inline; font-weight: bold;">{{ machine.name }}</p>
+        Start Machine Learning with <p style="display: inline; font-weight: bold;">{{ machine.name }}</p>
       </div>
 
       <div class="table-scroll">
@@ -51,6 +51,7 @@
 
       <div class="table-scroll">
         <!-- show all recorded cycles -->
+        Select a program <br>
         <div class="select">
           <select v-model="programFilter" @change="getRecordedCycles">
             <option v-for="program in allPrograms" :value="program">{{ program.cyclename }}</option>
@@ -64,7 +65,7 @@
                 Washing Program
               </th>
               <th>
-                Duration (ms)
+                Duration (s)
               </th>
               <th>
                 Started
@@ -75,6 +76,11 @@
             </tr>
           </thead>
           <tbody>
+            <tr v-show="cycles.length == 0">
+              <td colspan="4">
+                No record found for this program
+              </td>
+            </tr>
             <tr v-for="cycle in cycles">
               <td>
                 {{ cycle.cyclename }}
@@ -216,12 +222,55 @@ export default {
       })
     },
 
-    //get the actual state of the machine
-    getState: function() {
-
+    //actualize the properties of a machine such as live data and the state
+    //this method can be extended
+    actualizeMachine: function(){
+      this.actualizeLiveData()
+      this.actualizeMachineState()
     },
 
-    //
+    //get the actual state of the machine
+    actualizeMachineState: function() {
+      var self = this
+      axios.get(api + "machines/" + this.machine.machineId + "/live/cycle")
+      .then(function(response) {
+        if(response.status == 200) {
+
+          //actualize state of the machine
+          self.machine.live.cycle.state = response.data.state
+          self.state = response.data.state
+        }
+      })
+      .catch(function(err) {
+        //notify user of errors
+        self.$notify({
+          title: "Error" + err.response.status,
+          type: "error"
+        })
+      })
+    },
+
+    //actualizes the live data of the machine such as temperature and humidity
+    actualizeLiveData: function() {
+      var self = this
+      axios.get(api + "machines/" + this.machine.machineId + "/live/sensors")
+      .then(function(response) {
+
+        //actualize the sensor data of the machine
+        self.machine.live.sensors.temperature = response.data.temperature
+        self.machine.live.sensors.humidity = response.data.humidity
+      })
+      .catch(function(err) {
+
+        //notify the user, if an error occours
+        self.$notify({
+          title: "Error" + err.response.status,
+          type: "error"
+        })
+      })
+    },
+
+    //delte a recorded machine learning cycle
     deleteCycle: function(cycle) {
       var self = this
       axios.delete(api + "programs/" + this.programFilter.programId + "/machine/" + this.machine.machineId + "/learning/" + cycle.recordingId)
@@ -229,7 +278,7 @@ export default {
         if(response.status == 200){
 
           //update list
-          self.getRecordedCycles
+          self.getRecordedCycles()
 
           self.$notify({
             title: "Deleted record",
@@ -278,7 +327,6 @@ export default {
 
     //list all programs
     getPrograms: function(onlyRelated = true) {
-
       var url = api + "programs"
 
       if(onlyRelated) {
@@ -310,7 +358,7 @@ export default {
       })
     },
 
-    //relate program to machine
+    //relate a washing program to the machine
     relate: function() {
       var self = this
 
@@ -354,14 +402,10 @@ export default {
       }
     },
 
-    //unrelate program from the machine
+    //unrelate washing program from the machine
     unrelate: function(program) {
-      console.log("machine id: " + this.machine.machineId + " programid: " + program.programId)
       var self = this
-      axios.delete(api + "programs/machine", {
-        programid: program.programId,
-        machineid: this.machine.machineId
-      })
+      axios.delete(api + "programs/machine?machineid=" + this.machine.machineId + "&programid=" + program.programId)
       .then(function(response) {
         if(response.status == 200) {
           //update program list
@@ -384,8 +428,7 @@ export default {
       })
     },
 
-    //start machine learning
-    //TODO: Actualize the state of the machine
+    //start machine learning cycle
     recordMc: function() {
       var self = this
       //console.log(api + 'programs/' + this.selectedMcProgram.programId + '/machine/' + this.machine.machineId + '/learning/start')
@@ -393,7 +436,8 @@ export default {
       .then( function( response ) {
         if(response.status == 200) {
 
-          //TODO: Actualize the state of the machine
+          //Actualize the state of the machine
+          self.actualizeMachine()
 
           //empty dropdown
           self.selectedMcProgram = ''
@@ -449,14 +493,18 @@ export default {
       })
     },
 
-    //TODO: Make actualization of the state of the machine after stopping
+    //Terminates the actual machine learning cycle
     stopLearning: function() {
       var self = this
       axios.post(api + "machines/" + this.machine.machineId + "/learning/stop")
       .then(function(response) {
         if(response.status == 200) {
 
-          //TODO: Make actualization of the state of the machine
+          //Make actualization of the state of the machine
+          self.actualizeMachine()
+
+          //actualizes the recorded cycles
+          self.getRecordedCycles()
 
           self.$notify({
             title: "Recording cycle stopped",
@@ -467,6 +515,9 @@ export default {
       .catch(function(err) {
         switch (err.response.status) {
           case 400:
+            //actualize the state of the machine
+            self.actualizeMachine()
+
             self.$notify({
               title: "Error " + err.response.status,
               text: "No cycle was being recorded on the specified machine",
@@ -475,6 +526,9 @@ export default {
             break;
 
           case 406:
+            //actualize the state of the machine
+            self.actualizeMachine()
+
             self.$notify({
               title: "Error " + err.response.status,
               text: "The recording failed because it was too short",

@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
-import home from './components/home'
+import login from './components/login'
 import VueLocalStorage from 'vue-localstorage'
 import Notifications from 'vue-notification'
 
@@ -25,7 +25,7 @@ global.EventBus = new Vue();
 
 Vue.config.productionTip = false
 
-Vue.component("home", home)
+Vue.component("login", login)
 Vue.component("App", App)
 Vue.component("dashboard", dashboard)
 

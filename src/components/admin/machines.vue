@@ -48,7 +48,7 @@
 
                 <div v-show="getStateText(machine) == 'READY' ? true:false">
                   <button class="button is-success" @click="startMachine(machine)">
-                    Start the machine
+                    Start Washing
                   </button>
                 </div>
 
@@ -107,8 +107,15 @@ export default {
     //make the machine washing
     //TODO: write this method
     //TODO: Make actualization of the states of the machines
-    startMachine: function() {
+    startMachine: function(machine) {
       var self = this
+
+      console.log(Vue.ls.get('authHeader'))
+
+      /*axios.post(api + "machines/" + machine.machineId + "/start", {
+
+      })*/
+
     },
 
     //returns a text for the actual state of a machine

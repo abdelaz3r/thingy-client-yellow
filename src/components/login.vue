@@ -40,7 +40,7 @@
 <script>
 
 module.exports = {
-  name: 'home',
+  name: 'login',
   data: function() {
     return {
       email: '',

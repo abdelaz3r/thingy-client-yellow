@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import home from '@/components/home'
+import login from '@/components/login'
 //ADMIN components
 import adminDashboard from '@/components/admin/dashboard'
 import adminUsers from '@/components/admin/users'
@@ -19,11 +19,11 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: home
+      component: login
     },
     {
       path: '/login',
-      component: home
+      component: login
     },
 
     //ADMIN PATH
