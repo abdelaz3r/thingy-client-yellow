@@ -110,12 +110,43 @@ export default {
     startMachine: function(machine) {
       var self = this
 
-      console.log(Vue.ls.get('authHeader'))
+      axios.post(api + "machines/" + machine.machineId + "/start")
+      .then(function(response) {
+        if(response.status == 200) {
 
-      /*axios.post(api + "machines/" + machine.machineId + "/start", {
+          //actualize the state
+          self.getAllMachines()
 
-      })*/
+          self.$notify({
+            title: 'Washing cycle started',
+            type: 'success'
+          })
+        }
+      })
+      .catch(function(err) {
+        switch (err.response.status) {
+          case 400:
+            self.$notify({
+              title: 'Invalid parameter provided',
+              type: 'error'
+            })
+            break;
 
+          case 409:
+            self.$notify({
+              title: 'Error',
+              text: 'A learning cycle is already started for this machine or the machine is currently being used',
+              type: 'error'
+            })
+
+            break;
+          default:
+            self.$notify({
+              title: 'Error ' + err.response.status,
+              type: 'error'
+            })
+        }
+      })
     },
 
     //returns a text for the actual state of a machine

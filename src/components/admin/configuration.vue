@@ -11,8 +11,8 @@
         <table class="table is-fullwidth">
           <tbody>
 
-            <!-- show this section, if Machine is ready -->
-            <tr v-show="this.state == 'READY' ? true : false ">
+            <!-- show this section, if the machine is ready -->
+            <tr v-show="this.state == 'READY' ? true: false ">
                 <td>
                   <div class="select">
                     <select v-model="selectedMcProgram">
@@ -28,7 +28,7 @@
             </tr>
 
             <!-- show this section, if the machine is not ready -->
-            <tr v-show="state == 'READY' ? false : true ">
+            <tr v-show="state == 'LEARNING' ? true: false ">
                 <td>
                   The Machine is {{ state }} at the moment
                 </td>
@@ -37,6 +37,15 @@
                     Stop Learning
                   </button>
                 </td>
+            </tr>
+
+            <!-- show this section, if the machine is washing -->
+            <tr v-show="state == 'DETERMINING' ? true:false ">
+              <td>
+                The machine is {{ state }} at the moment. Nothing to do for you.
+              </td>
+              <td>
+              </td>
             </tr>
 
           </tbody>
@@ -139,12 +148,10 @@
             </tr>
             <tr class="input_as_textfield" v-for="relatedProgram in relatedPrograms">
               <td>
-                <input class="input" v-model="relatedProgram.cyclename"
-                @blur="update(relatedProgram)"
-                @keyup.enter="update(relatedProgram)">
+                {{ relatedProgram.cyclename }}
               </td>
               <td>
-                <button class="button is-danger" @click="unrelate(relatedProgram)">delete</button>
+                <button class="button is-danger" @click="unrelate(relatedProgram)">unrelate</button>
               </td>
             </tr>
           </tbody>

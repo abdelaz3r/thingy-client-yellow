@@ -65,7 +65,9 @@ module.exports = {
           EventBus.$emit("changeLogButton", "Logout")
 
           //save auth header for further requests
-          Vue.ls.set('authHeader', response.headers)
+          Vue.ls.set('authHeader', response.headers.authorization)
+
+          axios.defaults.headers.common['Authorization'] = response.headers.authorization
 
           //save user, which logged in successfully
           Vue.ls.set('myUser', response.data)
