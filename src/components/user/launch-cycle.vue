@@ -7,7 +7,7 @@
       <div class="columns">
         <div class="column" v-for="machine in machines">
           <a href="#" @click="startMachine(machine)">
-            <div class="notification is-warning subtitle is-4">Machine 1</div>
+            <div class="notification subtitle is-4" v-bind:class="getStateColor(machine.id)">{{ machine.name }}</div>
           </a>
         </div>
       </div>
@@ -16,11 +16,6 @@
 </template>
 
 <script>
-// charger les machines
-  // is-dark : éteinte
-  // is-success : allumée
-  // is-primary : allumée par vous
-
 export default {
   data: function() {
     return {
@@ -36,6 +31,8 @@ export default {
 
       axios.get(`${api}machines`).then(function(response) {
         self.machines = response.data
+
+        console.log(response.data)
       }).catch(function(err) {
         self.$notify({
           title: 'Error',
@@ -43,13 +40,10 @@ export default {
         })
       })
     },
-    startMachine: function(machineID) {
+    startMachine: function(machine) {
       var self = this
 
-      axios.post(`${api}machines`, {
-        name: self.addName,
-        mac: self.addMac
-      }).then(function(response) {
+      axios.post(`${api}machines/${machine.machineId}/start`).then(function(response) {
         self.getAllMachines()
 
         // notify user
@@ -58,11 +52,20 @@ export default {
           type: 'success'
         })
       }).catch(function(err) {
+        console.log(err)
         self.$notify({
           title: 'Machine not started',
           type: 'error'
         })
       })
+    },
+    getStateColor: function(state) {
+      switch (state) {
+        case 'Eteinte': return 'is-dark'; break;
+        case 'Allumée': return 'is-success'; break;
+        case 'self-allumée': return 'is-primary'; break;
+        default: return 'is-grey'; break;
+      }
     }
   }
 }
