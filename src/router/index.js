@@ -12,6 +12,7 @@ import adminConfiguration from '@/components/admin/configuration'
 //USER components
 import userDashboard from '@/components/user/dashboard'
 import userLaunchCycle from '@/components/user/launch-cycle'
+import userAnalytics from '@/components/user/user-analytics'
 
 Vue.use(Router)
 
@@ -65,6 +66,9 @@ export default new Router({
     }, {
       path: '/user/launch-cycle',
       component: userLaunchCycle
+    }, {
+      path: '/user/user-analytics',
+      component: userAnalytics
     }
   ]
 })

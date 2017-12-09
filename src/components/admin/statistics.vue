@@ -11,6 +11,7 @@
 </template>
 
 <script>
+
 export default {
   props: ['machine'],
   data: function() {
@@ -21,6 +22,7 @@ export default {
   methods: {
   },
   mounted() {
+    
   }
 }
 </script>
