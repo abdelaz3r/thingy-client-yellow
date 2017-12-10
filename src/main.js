@@ -10,7 +10,6 @@ import Notifications from 'vue-notification'
 
 //Import components
 import dashboard from './components/templates/dashboard'
-import LineChart from './components/templates/line-chart'
 
 Vue.use(VueLocalStorage, {
   name: 'ls',
@@ -29,7 +28,6 @@ Vue.config.productionTip = false
 Vue.component('login', login)
 Vue.component('App', App)
 Vue.component('dashboard', dashboard)
-Vue.component('line-chart', LineChart)
 
 /* eslint-disable no-new */
 var vue = new Vue({

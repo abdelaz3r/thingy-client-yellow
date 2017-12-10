@@ -11,18 +11,8 @@
           </a>
         </div>
         <div class="column">
-          <a href="#/user/xxx" >
-            <div class="notification is-primary subtitle is-4">XXX</div>
-          </a>
-        </div>
-        <div class="column">
-          <a href="#/user/xxx">
-            <div class="notification is-success subtitle is-4">XXX</div>
-          </a>
-        </div>
-        <div class="column">
-          <a href="#/user/xxx">
-            <div class="notification is-danger subtitle is-4">XXX</div>
+          <a href="#/user/user-analytics" >
+            <div class="notification is-primary subtitle is-4">Analytics</div>
           </a>
         </div>
       </div>
