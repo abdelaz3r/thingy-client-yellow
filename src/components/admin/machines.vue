@@ -25,8 +25,6 @@
               </th>
               <th>
               </th>
-              <th>
-              </th>
             </tr>
           </thead>
           <tbody>
@@ -66,11 +64,6 @@
                 <input class="input" v-model="machine.mac"
                 @blur="update(machine)"
                 @keyup.enter="update(machine)">
-              </td>
-              <td>
-                <router-link
-                class="button is-info"
-                :to="{ name: 'statistics', params:{machine: machine} }">Statistics</router-link>
               </td>
               <td>
                 <router-link
