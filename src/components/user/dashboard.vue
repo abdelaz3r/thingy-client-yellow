@@ -11,6 +11,11 @@
           </a>
         </div>
         <div class="column">
+          <a href="#/user/settings" >
+            <div class="notification is-secondary subtitle is-4">Settings</div>
+          </a>
+        </div>
+        <div class="column">
           <a href="#/user/user-analytics" >
             <div class="notification is-primary subtitle is-4">Analytics</div>
           </a>

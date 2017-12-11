@@ -7,7 +7,7 @@
       <div class="columns">
         <div class="column" v-for="machine in machines">
           <a href="#" @click="startMachine(machine)">
-            <div class="notification subtitle is-4" v-bind:class="getStateColor(machine.id)">{{ machine.name }}</div>
+            <div class="notification subtitle is-4" v-bind:class="getStateColor(machine.live.cycle.state)">{{ machine.name }}</div>
           </a>
         </div>
       </div>
@@ -31,8 +31,6 @@ export default {
 
       axios.get(`${api}machines`).then(function(response) {
         self.machines = response.data
-
-        console.log(response.data)
       }).catch(function(err) {
         self.$notify({
           title: 'Error',
@@ -61,9 +59,9 @@ export default {
     },
     getStateColor: function(state) {
       switch (state) {
-        case 'Eteinte': return 'is-dark'; break;
-        case 'Allumée': return 'is-success'; break;
-        case 'self-allumée': return 'is-primary'; break;
+        case 'DETERMINING': return 'is-dark'; break;
+        case 'READY': return 'is-success'; break;
+        case 'DETERMINED': return 'is-primary'; break;
         default: return 'is-grey'; break;
       }
     }

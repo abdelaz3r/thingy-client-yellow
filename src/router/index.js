@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import login from '@/components/login'
-//ADMIN components
+
+// ADMIN components
 import adminDashboard from '@/components/admin/dashboard'
 import adminUsers from '@/components/admin/users'
 import adminMachines from '@/components/admin/machines'
@@ -9,10 +10,11 @@ import adminPrograms from '@/components/admin/programs'
 import adminStatistics from '@/components/admin/statistics'
 import adminConfiguration from '@/components/admin/configuration'
 
-//USER components
+// USER components
 import userDashboard from '@/components/user/dashboard'
 import userLaunchCycle from '@/components/user/launch-cycle'
 import userAnalytics from '@/components/user/user-analytics'
+import userSettings from '@/components/user/user-settings'
 
 Vue.use(Router)
 
@@ -27,7 +29,7 @@ export default new Router({
       component: login
     },
 
-    //ADMIN PATH
+    // ADMIN PATH
     {
       path: '/admin/dashboard',
       component: adminDashboard
@@ -59,7 +61,7 @@ export default new Router({
       props: true
     },
 
-    //USER PATH
+    // USER PATH
     {
       path: '/user/dashboard',
       component: userDashboard
@@ -69,6 +71,9 @@ export default new Router({
     }, {
       path: '/user/user-analytics',
       component: userAnalytics
+    }, {
+      path: '/user/settings',
+      component: userSettings
     }
   ]
 })
