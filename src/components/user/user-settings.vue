@@ -43,6 +43,26 @@
       </div>
     </div>
 
+    <hr />
+
+    <h1 class="subtitle">
+      Update password
+    </h1>
+
+    <div class="container">
+      <div class="field">
+        <label class="label">New Password</label>
+        <div class="control">
+          <input class="input" type="password" v-model="password">
+        </div>
+      </div>
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-primary" @click="updateUserPassword">Save</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -54,7 +74,8 @@ export default {
       firstname: '',
       lastname: '',
       notification_token: '',
-      notification_token_application: ''
+      notification_token_application: '',
+      password: ''
     }
   },
   mounted () {
@@ -78,6 +99,26 @@ export default {
         if (response.status == 200) {
           self.$notify({
             title: 'User Updated',
+            type: 'success'
+          })
+        }
+      }).catch(function(err) {
+        self.$notify({
+          title: 'Error',
+          text: 'Error code: ' + err.response.status,
+          type: 'error'
+        })
+      })
+    },
+    updateUserPassword() {
+      var self = this
+
+      axios.put(api + 'users/' + self.user.userId, {
+        password: self.password
+      }).then(function(response) {
+        if (response.status == 200) {
+          self.$notify({
+            title: 'User password updated',
             type: 'success'
           })
         }
